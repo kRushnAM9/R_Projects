@@ -1,0 +1,69 @@
+---
+title: "Chiliveru_Rama_krishna_Assignment9"
+author: "krishna"
+date: "2025-07-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We have loaded the data set into R studio and saved it as .csv file
+
+Then for our analysis,we loaded required packages
+
+-   for data cleaning and EDA: Dplyr, tidyr, janitor, stringr
+
+-   for modelling : E1071, caret, tidymodels
+
+-   for model evaluation : yardstick, pROC, ROCR, ggplot2
+
+    ```{r}
+    adult <- read.csv("/Users/chiliveruramakrishna/Downloads/adult.csv")
+    ```
+
+    Then since the data frame has '?' in mutlipel cols, we need to replace those '?' with NA so that we can analyse and do the needful with missing values
+
+-   adult[adult == '?'] \<- NA will do the trick
+
+-   checking for overall missing values
+
+    ```{r}
+    adult <- na.omit(adult)
+    colSums(is.na(adult))
+    ```
+
+    so, we have 'na' values in workcalss (1836), occupation (1843) and native.country (583). All are character type cols and I'm going with removing 'na' rows.
+
+    ```{r}
+    prop.table(table(adult$workclass))*100
+    ```
+
+-   so, after cleaning missing values, we are now at Data encoding level.
+
+-   I've used one hot key encoding for sex, [1 for male and 0 for female]
+
+-   Then started to categorize cols such as education, workclass, marital status, relationship, occupations, country, income (75% belongs to \<=50K), race accordingly
+
+-   Then used min-max normalization for hours_per_week, and square root transformation for age
+
+-   The resultant data frame is called adult_incomes
+
+-   Then tried using recipe library to do SVM (forgot to split dataset into traing and testing, rookie mistake)
+
+-   After spending what felt like an eternity, decided to use tinymodels() workflow() to do SVM, since it felt more modular and easy on my machine.
+
+-   Then split data into training and testing
+
+-   used recipe to clean, slice and prepare data for modelling
+
+-   defined how to model data using svm_linear
+
+-   then workflow() brought everything together to model dataset
+
+-   applied that model on training data
+
+-   Then did predictions on testing_data
+
+-   Calculated Accuracy, confusion matrix scores, precision and recall
