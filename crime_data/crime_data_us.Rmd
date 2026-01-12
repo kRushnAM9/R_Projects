@@ -1,0 +1,50 @@
+---
+title: "Crime_data_US"
+author: "kRushnAM"
+date: "2026-01-11"
+output: html_document
+---
+
+* We started with a data set downloaded from https://catalog.data.gov/dataset/crime-data-from-2020-to-present
+
+[at first I thought  to clean the data-set and query it using MySQL (I clearly over estimated my skills) and the Unicode col names made me loose my sleep]
+
+so ultimately I opened my trusty R studio and installed packages for Data cleaning, EDA and Viz.
+
+```{r}
+View(crime_data_details)
+```
+
+As we can see the complete_rate for cols like crime_cd 4,3,2, cross_street,weapon-used_cd, weapon_desc, mocodes is less, I'm creating a new table with rest of the cols for the purpose of our analysis
+
+after dropping those cols and removing NA values, we got a clean data set called "crimes_data" (clean crimes! irony!!!)
+
+```{r}
+View(crimes_data)
+```
+
+Initially taught to split the date_occured and date_reported into date, month, year but that leads to more cols and we aren't gonna do a prediction analysis so why to bother!
+
+so, the time_occ is in text format, but we need it in HH:MM format. Hence, lets change that into its original format.
+
+I used str_pad and then sub functions to change the time_occured into
+1.A 4 character text
+2.Then sub function converted it into HH:MM format.
+Easy! Peasy!!!
+
+Now, when I looked at Vict_age I saw -4,-2 age. That is either a typo or we have some really scary ghosts out there irritating baby ghosts.
+for the sanity of this analysis lets 
+
+Oops! while doing all this, I accidentally closed R studio. That's why, they say we need to save the DF first. Hence, Crimes_data has been saved as .csv file [I'm gonna load that csv into MySQL workbench and gonna torture data with illogical queries]
+
+We have 
+1.cleaned col names
+2. removed NA vals
+3. Morphed the dates from text to date
+4. time from text to time
+5. removed -ve values from vict_age
+so the only thing left is Visualization [Drum_role]
+
+Before jumping into the ggplot, I had to
+1.Unpack the date col into date, month and year (seriously! How did I forgot)
+2. for first viz we gonna concentrate on years, months and total crimes reported
